@@ -6,30 +6,39 @@ class TrieTest < Minitest::Test
   attr_reader :the_trie
 
   def setup
-    skip
     @the_trie = Trie.new
+  end
+
+  def test_trie_class
+    assert_equal Trie, the_trie.class
+  end
+
+  def test_root
+    assert_equal ({}), the_trie.root.links
+  end
+
+  def test_root_class
+    assert_equal Node, the_trie.root.class
   end
 
   def test_insert_nothing
     skip
     the_trie.insert("")
-    assert_equal the_trie.root.links, ({})
+    assert_equal ({}), the_trie.root.links
   end
 
   def test_insert_nil
     skip
     the_trie.insert(nil)
-    assert_equal ({}), the_trie.root.links
+    assert_equal nil, the_trie.root
   end
 
   def test_insert_node
-    skip
     the_trie.insert("a")
-    assert_equal ({"a" => nil}), the_trie.root.links
+    assert_equal ["a"], the_trie.root.links.keys
   end
 
   def test_insert_word
-    skip
     the_trie.insert("at")
     assert_equal ["a"], the_trie.root.links.keys
     assert_equal ["t"], the_trie.root.links["a"].links.keys
