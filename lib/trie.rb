@@ -67,7 +67,25 @@ class Trie
     end
   end
 
-  def find_words_in_trie(node)
+  def find_words_in_trie(node, word_array = [], word = "")
+    if node.links.nil?
+      nil
+    else
+      word_array = iterate_through_links_find(node, word_array, word)
+    end
+    word_array
+  end
+
+  def iterate_through_links_find(node, word_array, word)
+    node.links.each do |key, value|
+      word += key
+      if value.word == true
+        word_array << word
+      end
+      find_words_in_trie(value, word_array, word)
+      word = word.chop
+    end
+    word_array
   end
 
 end

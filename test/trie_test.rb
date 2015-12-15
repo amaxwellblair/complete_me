@@ -93,17 +93,29 @@ class TrieTest < Minitest::Test
     assert_equal true, the_trie.find_given_word_trie(%w(c a t)).word
   end
 
+
   def test_find_given_word_trie_verify
-    the_trie.insert("at")
-    the_trie.insert("a")
     the_trie.insert("cat")
     the_trie.insert("cattie")
     the_trie.insert("chicken")
-    the_trie.insert("bo")
-    the_trie.insert("max")
-    the_trie.insert("donkey")
     assert_equal ["a", "h"], the_trie.find_given_word_trie(%w(c)).links.keys
   end
+
+  def test_find_given_word_trie
+    the_trie.insert("a")
+    the_trie.insert("at")
+    assert_equal ["a", "at"], the_trie.find_words_in_trie(the_trie.root)
+  end
+
+  def test_find_given_word_trie_branches
+    the_trie.insert("a")
+    the_trie.insert("at")
+    the_trie.insert("cat")
+    the_trie.insert("cattie")
+    the_trie.insert("chicken")
+    assert_equal ["a", "at", "cat", "cattie", "chicken"], the_trie.find_words_in_trie(the_trie.root)
+  end
+
 
   def test_retrieve_word
     skip
