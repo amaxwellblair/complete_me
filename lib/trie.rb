@@ -27,10 +27,47 @@ class Trie
     end
   end
 
+  def word_count(node = root, current_count = 0)
+    if node.links.nil?
+      nil
+    else
+      current_count = iterate_through_links_count(node, current_count)
+    end
+    current_count
+  end
 
+  def iterate_through_links_count(node, current_count)
+    node.links.each do |key, value|
+      if value.word == true
+        current_count += 1
+      end
+      current_count = word_count(value, current_count)
+    end
+    current_count
+  end
 
   def create_node(word = false)
     return Node.new(word)
+  end
+
+  def find_suggestions(word)
+    letter_array = word.chars
+    desired_trie = find_given_word_trie(letter_array)
+    find_words_in_trie(desired_trie)
+  end
+
+  def find_given_word_trie(letter_array, node = root)
+    letter = letter_array.shift
+    if node.links[letter].nil?
+      return nil
+    elsif letter_array.empty?
+      return node.links[letter]
+    else
+       find_given_word_trie(letter_array, node.links[letter])
+    end
+  end
+
+  def find_words_in_trie(node)
   end
 
 end

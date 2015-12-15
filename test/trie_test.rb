@@ -63,6 +63,48 @@ class TrieTest < Minitest::Test
     assert_equal true, the_trie.root.links["a"].word
   end
 
+  def test_count
+    the_trie.insert("at")
+    the_trie.insert("a")
+    assert_equal 2, the_trie.word_count
+  end
+
+  def test_word_count_eight
+    the_trie.insert("at")
+    the_trie.insert("a")
+    the_trie.insert("cat")
+    the_trie.insert("cattie")
+    the_trie.insert("chicken")
+    the_trie.insert("bo")
+    the_trie.insert("max")
+    the_trie.insert("donkey")
+    assert_equal 8, the_trie.word_count
+  end
+
+  def test_find_given_word_trie
+    the_trie.insert("at")
+    the_trie.insert("a")
+    the_trie.insert("cat")
+    the_trie.insert("cattie")
+    the_trie.insert("chicken")
+    the_trie.insert("bo")
+    the_trie.insert("max")
+    the_trie.insert("donkey")
+    assert_equal true, the_trie.find_given_word_trie(%w(c a t)).word
+  end
+
+  def test_find_given_word_trie_verify
+    the_trie.insert("at")
+    the_trie.insert("a")
+    the_trie.insert("cat")
+    the_trie.insert("cattie")
+    the_trie.insert("chicken")
+    the_trie.insert("bo")
+    the_trie.insert("max")
+    the_trie.insert("donkey")
+    assert_equal ["a", "h"], the_trie.find_given_word_trie(%w(c)).links.keys
+  end
+
   def test_retrieve_word
     skip
     the_trie.insert("at")
