@@ -1,4 +1,3 @@
-$LOAD_PATH.unshift("./lib/")
 require 'minitest'
 require 'trie'
 
@@ -12,3 +11,25 @@ class CompleteMe
   def create_trie
     Trie.new
   end
+
+  def insert(word)
+    trie.insert(word)
+  end
+
+  def count
+    trie.word_count
+  end
+
+  def suggest(word)
+    trie.find_suggestions(word)
+  end
+
+  def populate(dictionary)
+    dictionary = dictionary.split("\n")
+    dictionary.each do |word|
+      insert(word)
+    end
+    count
+  end
+
+end
