@@ -6,7 +6,6 @@ class CompleteMeTest < Minitest::Test
   attr_reader :autocorrect
 
   def setup
-    skip
     @autocorrect = CompleteMe.New
   end
 
