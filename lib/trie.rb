@@ -1,11 +1,13 @@
 require 'pry'
 require 'node'
+require 'memory'
 
 class Trie
   attr_reader :root
 
   def initialize
     @root = create_node
+    @memory_bank = create_memory_bank
   end
 
   def insert(word)
@@ -46,14 +48,29 @@ class Trie
     current_count
   end
 
+  def select(word, selection)
+    memory_bank.insert(word,selection)
+  end
+
   def create_node(word = false)
     return Node.new(word)
+  end
+
+  def create_memory_bank
+    return Memory.new
   end
 
   def find_suggestions(word)
     letter_array = word.chars
     desired_trie = find_given_word_trie(letter_array)
-    find_words_in_trie(desired_trie)
+    suggested_suffix = find_suffix_in_trie(desired_trie)
+    combine_word_with_pieces(word, suggested_suffix)
+  end
+
+  def combine_word_with_pieces(word, pieces)
+    pieces.map do |piece|
+      word + piece
+    end
   end
 
   def find_given_word_trie(letter_array, node = root)
@@ -67,25 +84,25 @@ class Trie
     end
   end
 
-  def find_words_in_trie(node, word_array = [], word = "")
+  def find_suffix_in_trie(node, suffix_array = [], suffix = "")
     if node.links.nil?
       nil
     else
-      word_array = iterate_through_links_find(node, word_array, word)
+      suffix_array = iterate_through_links_find(node, suffix_array, suffix)
     end
-    word_array
+    suffix_array
   end
 
-  def iterate_through_links_find(node, word_array, word)
+  def iterate_through_links_find(node, suffix_array, suffix)
     node.links.each do |key, value|
-      word += key
+      suffix += key
       if value.word == true
-        word_array << word
+        suffix_array << suffix
       end
-      find_words_in_trie(value, word_array, word)
-      word = word.chop
+      find_suffix_in_trie(value, suffix_array, suffix)
+      suffix = suffix.chop
     end
-    word_array
+    suffix_array
   end
 
 end

@@ -104,7 +104,7 @@ class TrieTest < Minitest::Test
   def test_find_given_word_trie
     the_trie.insert("a")
     the_trie.insert("at")
-    assert_equal ["a", "at"], the_trie.find_words_in_trie(the_trie.root)
+    assert_equal ["a", "at"], the_trie.find_suffix_in_trie(the_trie.root)
   end
 
   def test_find_given_word_trie_branches
@@ -113,12 +113,22 @@ class TrieTest < Minitest::Test
     the_trie.insert("cat")
     the_trie.insert("cattie")
     the_trie.insert("chicken")
-    assert_equal ["a", "at", "cat", "cattie", "chicken"], the_trie.find_words_in_trie(the_trie.root)
+    assert_equal ["a", "at", "cat", "cattie", "chicken"], the_trie.find_suffix_in_trie(the_trie.root)
+  end
+
+  def test_combine_words
+    assert_equal ["Hilarious"], the_trie.combine_word_with_pieces("Hi",["larious"])
   end
 
 
   def test_retrieve_word
-    skip
+    the_trie.insert("cat")
+    the_trie.insert("cattie")
+    the_trie.insert("chicken")
+    assert_equal ["cat", 'cattie'], the_trie.find_suggestions("ca")
+  end
+
+  def test_retrieve_word
     the_trie.insert("at")
     assert_equal ["at"], the_trie.find_suggestions("a")
   end
@@ -146,6 +156,11 @@ class TrieTest < Minitest::Test
     the_trie.insert("atom")
     the_trie.root.links["a"].links.weight = 10
     assert_equal ["at", "a", "atom"], the_trie.find_suggestions("a")
+  end
+
+  def test_nil_case
+    skip
+    #insert nil, blank, same word, other edge cases
   end
 
 
