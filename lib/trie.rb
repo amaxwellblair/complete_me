@@ -3,7 +3,7 @@ require 'node'
 require 'memory'
 
 class Trie
-  attr_reader :root
+  attr_reader :root, :memory_bank
 
   def initialize
     @root = create_node
@@ -48,7 +48,7 @@ class Trie
     current_count
   end
 
-  def select(word, selection)
+  def selects(word, selection)
     memory_bank.insert(word,selection)
   end
 
@@ -64,12 +64,44 @@ class Trie
     letter_array = word.chars
     desired_trie = find_given_word_trie(letter_array)
     suggested_suffix = find_suffix_in_trie(desired_trie)
-    combine_word_with_pieces(word, suggested_suffix)
+    unweighted_suggestions = combine_word_with_pieces(word, suggested_suffix)
+    weight_suggestions(unweighted_suggestions, word)
+  end
+
+  def weight_suggestions(unweighted_suggestions, word)
+    if memory_bank.bank[word].nil?
+        unweighted_suggestions
+    else
+      weighted_hash = memory_bank.bank[word]
+      weighted_words = weighted_hash.keys
+      weighted_index = weighted_hash.values
+      weighted_suggestions = weighted_words.sort_by.with_index do |word, i|
+        weighted_index[i]
+      end
+      weighted_suggestions += unweighted_suggestions
+      weighted_suggestions = weighted_suggestions.uniq
+    end
   end
 
   def combine_word_with_pieces(word, pieces)
+    pieces.unshift("") if word?(word)
     pieces.map do |piece|
       word + piece
+    end
+  end
+
+  def word?(word)
+    word_iteration(word.chars, node = root)
+  end
+
+  def word_iteration(letters, node)
+    letter = letters.shift
+    if node.links[letter].nil?
+      return false
+    elsif letters.empty?
+      return node.links[letter].word
+    else
+      word_iteration(letters,node.links[letter])
     end
   end
 

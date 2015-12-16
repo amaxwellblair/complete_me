@@ -45,19 +45,16 @@ class TrieTest < Minitest::Test
   end
 
   def test_insert_word_true
-    skip
     the_trie.insert("a")
     assert_equal true, the_trie.root.links["a"].word
   end
 
   def test_insert_word_false
-    skip
     the_trie.insert("at")
     assert_equal false, the_trie.root.links["a"].word
   end
 
   def test_insert_two_words_true
-    skip
     the_trie.insert("at")
     the_trie.insert("a")
     assert_equal true, the_trie.root.links["a"].word
@@ -120,11 +117,30 @@ class TrieTest < Minitest::Test
     assert_equal ["Hilarious"], the_trie.combine_word_with_pieces("Hi",["larious"])
   end
 
-
-  def test_retrieve_word
+  def test_words_questions
+    the_trie.insert("a")
+    the_trie.insert("at")
     the_trie.insert("cat")
     the_trie.insert("cattie")
     the_trie.insert("chicken")
+    assert_equal true, the_trie.word?("cattie")
+  end
+
+  def test_words_questions_false
+    the_trie.insert("a")
+    the_trie.insert("at")
+    the_trie.insert("cat")
+    the_trie.insert("cattie")
+    the_trie.insert("chicken")
+    assert_equal false, the_trie.word?("catty")
+  end
+
+
+  def test_retrieve_word_other
+    the_trie.insert("cat")
+    the_trie.insert("cattie")
+    the_trie.insert("chicken")
+    the_trie.insert("cm")
     assert_equal ["cat", 'cattie'], the_trie.find_suggestions("ca")
   end
 
@@ -133,30 +149,41 @@ class TrieTest < Minitest::Test
     assert_equal ["at"], the_trie.find_suggestions("a")
   end
 
-  def test_select_word_weight
-    skip
-    the_trie.insert("at")
-    the_trie.insert("a")
-    the_trie.selects("a", "at")
-    assert_equal 1, the_trie.root.links["a"].links.weight
-  end
-
-  def test_return_selections
-    skip
-    the_trie.insert("at")
-    the_trie.insert("a")
-    the_trie.insert("atom")
-    assert_equal ["a", "at", "atom"], the_trie.find_suggestions("a")
-  end
-
   def test_weighted_selections
-    skip
     the_trie.insert("at")
     the_trie.insert("a")
     the_trie.insert("atom")
-    the_trie.root.links["a"].links.weight = 10
+    the_trie.selects("a", "at")
     assert_equal ["at", "a", "atom"], the_trie.find_suggestions("a")
   end
+
+  def test_weighted_selections_num_two
+    the_trie.insert("at")
+    the_trie.insert("a")
+    the_trie.insert("atom")
+    the_trie.selects("a", "at")
+    the_trie.selects("a", "atom")
+    the_trie.selects("a", "atom")
+    assert_equal ["atom", "at", "a"], the_trie.find_suggestions("a")
+  end
+
+
+  def test_weighted_selections_not_selected
+    the_trie.insert("at")
+    the_trie.insert("a")
+    the_trie.insert("atom")
+    the_trie.selects("a", "at")
+    the_trie.selects("a", "atom")
+    the_trie.selects("a", "atom")
+    assert_equal ["at", "atom"], the_trie.find_suggestions("at")
+  end
+
+  def test_weighted_edge_case
+    skip
+    #nil, blank, etc
+  end
+
+
 
   def test_nil_case
     skip

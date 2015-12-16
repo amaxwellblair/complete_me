@@ -19,25 +19,25 @@ class MemoryTest < Minitest::Test
 
   def test_memory_insert_one
     the_bank.insert("a", "at")
-    assert_equal ({"a" => {"at" => 1}}), the_bank.bank
+    assert_equal ({"a" => {"at" => 0}}), the_bank.bank
   end
 
   def test_memory_insert_two_same
     the_bank.insert("a", "at")
     the_bank.insert("a", "at")
-    assert_equal ({"a" => {"at" => 2}}), the_bank.bank
+    assert_equal ({"a" => {"at" => -1}}), the_bank.bank
   end
 
   def test_memory_insert_two_diff_letters
     the_bank.insert("a", "at")
     the_bank.insert("c", "cat")
-    assert_equal ({"a" => {"at" => 1}, "c" => {"cat" => 1}}), the_bank.bank
+    assert_equal ({"a" => {"at" => 0}, "c" => {"cat" => 0}}), the_bank.bank
   end
 
   def test_memory_insert_two_diff
     the_bank.insert("a", "at")
     the_bank.insert("a", "attic")
-    assert_equal ({"a" => {"at" => 1, "attic" => 1}}), the_bank.bank
+    assert_equal ({"a" => {"at" => 0, "attic" => 0}}), the_bank.bank
   end
 
   def test_memory_edge_cases
