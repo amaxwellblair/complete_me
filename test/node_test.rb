@@ -17,8 +17,4 @@ class NodeTest < Minitest::Test
     assert_equal false, the_node.word
   end
 
-  def test_empty_weight
-    assert_equal 0, the_node.weight
-  end
-
 end

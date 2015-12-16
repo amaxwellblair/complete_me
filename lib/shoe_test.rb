@@ -1,13 +1,19 @@
-Shoes.app do
-  background "#EFC"
-  border("#BE8",
-         strokewidth: 6)
+require 'complete_me'
 
-  stack(margin: 12) do
-    para "Enter your name"
-    flow do
-      edit_line
-      button "OK"
+auto_complete = CompleteMe.new
+
+dictionary = File.read('/usr/share/dict/words')
+
+auto_complete.populate(dictionary)
+
+Shoes.app do
+
+  edit_box do |e|
+    if e.text == ""
+      @counter.text = para ""
+    else
+      @counter.text = auto_complete.suggest(e.text).first(20).join("\n")
     end
   end
+  @counter = para ""
 end

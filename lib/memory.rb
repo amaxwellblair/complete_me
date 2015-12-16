@@ -1,4 +1,3 @@
-require "pry"
 
 class Memory
   attr_accessor :bank

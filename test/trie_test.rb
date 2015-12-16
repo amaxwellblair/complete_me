@@ -22,15 +22,13 @@ class TrieTest < Minitest::Test
   end
 
   def test_insert_nothing
-    skip
     the_trie.insert("")
     assert_equal ({}), the_trie.root.links
   end
 
   def test_insert_nil
-    skip
     the_trie.insert(nil)
-    assert_equal nil, the_trie.root
+    assert_equal ({}), the_trie.root.links
   end
 
   def test_insert_node
@@ -87,7 +85,7 @@ class TrieTest < Minitest::Test
     the_trie.insert("bo")
     the_trie.insert("max")
     the_trie.insert("donkey")
-    assert_equal true, the_trie.find_given_word_trie(%w(c a t)).word
+    assert_equal true, the_trie.find_given_substring_trie(%w(c a t)).word
   end
 
 
@@ -95,7 +93,7 @@ class TrieTest < Minitest::Test
     the_trie.insert("cat")
     the_trie.insert("cattie")
     the_trie.insert("chicken")
-    assert_equal ["a", "h"], the_trie.find_given_word_trie(%w(c)).links.keys
+    assert_equal ["a", "h"], the_trie.find_given_substring_trie(%w(c)).links.keys
   end
 
   def test_find_given_word_trie
@@ -114,7 +112,7 @@ class TrieTest < Minitest::Test
   end
 
   def test_combine_words
-    assert_equal ["Hilarious"], the_trie.combine_word_with_pieces("Hi",["larious"])
+    assert_equal ["Hilarious"], the_trie.combine_substring_with_suffix("Hi",["larious"])
   end
 
   def test_words_questions

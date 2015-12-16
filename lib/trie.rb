@@ -1,4 +1,3 @@
-require 'pry'
 require_relative 'node'
 require_relative 'memory'
 
@@ -11,11 +10,27 @@ class Trie
   end
 
   def insert(word)
-    letter_array = word.chars
-    letter_insert(letter_array)
+    if data_invalid?(word)
+      return "Data invalid"
+    else
+      letter_array = word.chars
+      insert_each_letter(letter_array)
+    end
   end
 
-  def letter_insert(letter_array, node = root)
+  def data_invalid?(word)
+    if word == ""
+      true
+    elsif word == nil
+      true
+    elsif word.class != String
+      true
+    else
+      false
+    end
+  end
+
+  def insert_each_letter(letter_array, node = root)
     letter = letter_array.shift
     if letter_array.empty?
       if node.links[letter].nil?
@@ -25,7 +40,7 @@ class Trie
       end
     else
       node.links[letter] = create_node if node.links[letter].nil?
-      letter_insert(letter_array, node.links[letter])
+      insert_each_letter(letter_array, node.links[letter])
     end
   end
 
@@ -60,30 +75,34 @@ class Trie
     return Memory.new
   end
 
-  def find_suggestions(word)
-    letter_array = word.chars
-    desired_trie = find_given_word_trie(letter_array)
+  def find_suggestions(substring)
+    letter_array = substring.chars
+    desired_trie = find_given_substring_trie(letter_array)
     suggested_suffix = find_suffix_in_trie(desired_trie)
-    unweighted_suggestions = combine_word_with_pieces(word, suggested_suffix)
-    weight_suggestions(unweighted_suggestions, word)
+    unweighted_suggestions = combine_substring_with_suffix(substring, suggested_suffix)
+    weight_suggestions(unweighted_suggestions, substring)
   end
 
-  def weight_suggestions(unweighted_suggestions, word)
-    if memory_bank.bank[word].nil?
+  def weight_suggestions(unweighted_suggestions, substring)
+    if memory_bank.bank[substring].nil?
         unweighted_suggestions
     else
-      weighted_hash = memory_bank.bank[word]
-      weighted_words = weighted_hash.keys
-      weighted_index = weighted_hash.values
-      weighted_suggestions = weighted_words.sort_by.with_index do |word, i|
-        weighted_index[i]
-      end
+      weighted_suggestions = sort_weights(memory_bank.bank[substring])
       weighted_suggestions += unweighted_suggestions
       weighted_suggestions = weighted_suggestions.uniq
     end
   end
 
-  def combine_word_with_pieces(word, pieces)
+  def sort_weights(weighted_hash)
+    weighted_words = weighted_hash.keys
+    weighted_index = weighted_hash.values
+    weighted_words.sort_by.with_index do |word, i|
+      weighted_index[i]
+    end
+  end
+
+
+  def combine_substring_with_suffix(word, pieces)
     pieces.unshift("") if word?(word)
     pieces.map do |piece|
       word + piece
@@ -105,14 +124,14 @@ class Trie
     end
   end
 
-  def find_given_word_trie(letter_array, node = root)
+  def find_given_substring_trie(letter_array, node = root)
     letter = letter_array.shift
     if node.links[letter].nil?
       return nil
     elsif letter_array.empty?
       return node.links[letter]
     else
-       find_given_word_trie(letter_array, node.links[letter])
+       find_given_substring_trie(letter_array, node.links[letter])
     end
   end
 
