@@ -1,5 +1,5 @@
 require 'minitest'
-require 'trie'
+require_relative 'trie'
 
 class CompleteMe
   attr_reader :trie
@@ -30,6 +30,10 @@ class CompleteMe
       insert(word)
     end
     count
+  end
+
+  def select(substring, suggestion)
+    trie.selects(substring, suggestion)
   end
 
 end

@@ -1,6 +1,6 @@
 require 'pry'
-require 'node'
-require 'memory'
+require_relative 'node'
+require_relative 'memory'
 
 class Trie
   attr_reader :root, :memory_bank
