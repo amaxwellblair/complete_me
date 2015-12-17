@@ -42,9 +42,4 @@ class MemoryTest < Minitest::Test
     assert_equal ({"a" => {"at" => 0, "attic" => 0}}), the_bank.bank
   end
 
-  def test_memory_edge_cases
-    skip
-    #nil, blank, etc
-  end
-
 end

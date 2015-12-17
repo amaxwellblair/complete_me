@@ -54,6 +54,8 @@ class Trie
   def selects(word, selection)
     if data_invalid?(word)
       puts "Data invalid"
+    elsif !word?(selection)
+      puts "Selection not a word"
     else
       memory_bank.insert(word,selection)
     end

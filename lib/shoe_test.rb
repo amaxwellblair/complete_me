@@ -12,7 +12,7 @@ Shoes.app do
     edit_box do |e|
       if e.text == ""
         @counter.text = para ""
-      elsif auto_complete.suggest(e.text) == []
+      elsif auto_complete.suggest(e.text).empty?
         @counter.text = para ""
       else
         @counter.text = auto_complete.suggest(e.text).first(20).join("\n")

@@ -3,6 +3,7 @@ require 'simplecov'
 SimpleCov.start
 require 'minitest'
 require 'complete_me'
+require 'pry'
 
 class CompleteMeTest < Minitest::Test
   attr_reader :autocorrect

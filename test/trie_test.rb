@@ -3,6 +3,7 @@ require 'simplecov'
 SimpleCov.start
 require 'minitest'
 require 'trie'
+require 'pry'
 
 class TrieTest < Minitest::Test
   attr_reader :the_trie
@@ -183,6 +184,17 @@ class TrieTest < Minitest::Test
     the_trie.insert("a")
     the_trie.insert("atom")
     assert_equal [], the_trie.find_suggestions("kkk")
+  end
+
+  def test_weighted_selections_not_a_word
+    the_trie.insert("at")
+    the_trie.insert("a")
+    the_trie.insert("atom")
+    the_trie.selects("a", "at")
+    the_trie.selects("a", "atom")
+    the_trie.selects("a", "atom")
+    the_trie.selects("a", "askljnfklnsf")
+    assert_equal ["atom", "at", "a"], the_trie.find_suggestions("a")
   end
 
 
