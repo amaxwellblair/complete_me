@@ -11,22 +11,10 @@ class Trie
 
   def insert(word)
     if data_invalid?(word)
-      return "Data invalid"
+      puts "Data invalid"
     else
       letter_array = word.chars
       insert_each_letter(letter_array)
-    end
-  end
-
-  def data_invalid?(word)
-    if word == ""
-      true
-    elsif word == nil
-      true
-    elsif word.class != String
-      true
-    else
-      false
     end
   end
 
@@ -64,15 +52,11 @@ class Trie
   end
 
   def selects(word, selection)
-    memory_bank.insert(word,selection)
-  end
-
-  def create_node(word = false)
-    return Node.new(word)
-  end
-
-  def create_memory_bank
-    return Memory.new
+    if data_invalid?(word)
+      puts "Data invalid"
+    else
+      memory_bank.insert(word,selection)
+    end
   end
 
   def find_suggestions(substring)
@@ -101,16 +85,19 @@ class Trie
     end
   end
 
-
-  def combine_substring_with_suffix(word, pieces)
-    pieces.unshift("") if word?(word)
-    pieces.map do |piece|
-      word + piece
+  def combine_substring_with_suffix(substring, suffixes)
+    suffixes.unshift("") if word?(substring)
+    suffixes.map do |suffix|
+      substring + suffix
     end
   end
 
   def word?(word)
-    word_iteration(word.chars, node = root)
+    if data_invalid?(word)
+      puts "Data invalid"
+    else
+      word_iteration(word.chars, node = root)
+    end
   end
 
   def word_iteration(letters, node)
@@ -154,6 +141,26 @@ class Trie
       suffix = suffix.chop
     end
     suffix_array
+  end
+
+  def data_invalid?(word)
+    if word == ""
+      true
+    elsif word == nil
+      true
+    elsif word.class != String
+      true
+    else
+      false
+    end
+  end
+
+  def create_node(word = false)
+    return Node.new(word)
+  end
+
+  def create_memory_bank
+    return Memory.new
   end
 
 end

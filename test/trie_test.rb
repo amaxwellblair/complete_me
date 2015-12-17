@@ -1,4 +1,6 @@
 $LOAD_PATH.unshift("./lib/")
+require 'simplecov'
+SimpleCov.start
 require 'minitest'
 require 'trie'
 
@@ -179,13 +181,6 @@ class TrieTest < Minitest::Test
   def test_weighted_edge_case
     skip
     #nil, blank, etc
-  end
-
-
-
-  def test_nil_case
-    skip
-    #insert nil, blank, same word, other edge cases
   end
 
 

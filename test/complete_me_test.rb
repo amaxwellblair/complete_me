@@ -1,4 +1,6 @@
 $LOAD_PATH.unshift("./lib/")
+require 'simplecov'
+SimpleCov.start
 require 'minitest'
 require 'complete_me'
 
@@ -15,13 +17,11 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_insert_nothing
-    skip
     autocorrect.insert("")
     assert_equal 0, autocorrect.count
   end
 
   def test_insert_nil
-    skip
     autocorrect.insert(nil)
     assert_equal 0, autocorrect.count
   end

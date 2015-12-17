@@ -1,4 +1,6 @@
 $LOAD_PATH.unshift("./lib/")
+require 'simplecov'
+SimpleCov.start
 require 'minitest'
 require 'node'
 
