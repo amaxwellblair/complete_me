@@ -62,6 +62,7 @@ class Trie
   def find_suggestions(substring)
     letter_array = substring.chars
     desired_trie = find_given_substring_trie(letter_array)
+    return [] if desired_trie.nil?
     suggested_suffix = find_suffix_in_trie(desired_trie)
     unweighted_suggestions = combine_substring_with_suffix(substring, suggested_suffix)
     weight_suggestions(unweighted_suggestions, substring)

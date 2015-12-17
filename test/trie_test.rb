@@ -179,8 +179,10 @@ class TrieTest < Minitest::Test
   end
 
   def test_weighted_edge_case
-    skip
-    #nil, blank, etc
+    the_trie.insert("at")
+    the_trie.insert("a")
+    the_trie.insert("atom")
+    assert_equal [], the_trie.find_suggestions("kkk")
   end
 
 
